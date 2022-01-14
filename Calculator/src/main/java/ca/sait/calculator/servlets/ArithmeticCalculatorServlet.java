@@ -36,11 +36,12 @@ public class ArithmeticCalculatorServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        String firstString = request.getParameter("first");
+        String secondString = request.getParameter("second");
         if (request.getParameter("first") != null && request.getParameter("second") != null) {
             
             try {
-                String firstString = request.getParameter("first");
-                String secondString = request.getParameter("second");
+                
                 int first = Integer.parseInt(firstString);
                 int second = Integer.parseInt(secondString);
                 int result;
@@ -56,8 +57,6 @@ public class ArithmeticCalculatorServlet extends HttpServlet {
                     throw new Exception();
                 }
                 request.setAttribute("message", result);
-                request.setAttribute("first", first);
-                request.setAttribute("second", second);
             } catch (Exception ex) {
                 request.setAttribute("message", "Invalid");
                 log("Exception occured");
@@ -66,6 +65,9 @@ public class ArithmeticCalculatorServlet extends HttpServlet {
             request.setAttribute("message", "Invalid");
             log("Null values");
         }
+        request.setAttribute("first", firstString == null ? "" : firstString);
+        request.setAttribute("second", secondString == null ? "" : secondString);
+        
         getServletContext().getRequestDispatcher("/WEB-INF/arithmeticcalculator.jsp").forward(request, response);
     }
 }
